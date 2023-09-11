@@ -1,7 +1,7 @@
 # Imports
 import os
 
-import pytorch_lightning as pl
+import lightning.pytorch as pl
 import torch
 from torch import nn
 from torch.nn import functional as F
@@ -70,9 +70,9 @@ train_dataloader = DataLoader(dataset, batch_size=32)
 # Initialise the model
 model = LitConvClassifier()
 
-# Initialise the trainer with 5 epochs
+# Initialise the trainer with 1 epoch
 # An epoch is a complete pass through the entire training dataset
-trainer = pl.Trainer(max_epochs=5)
+trainer = pl.Trainer(max_epochs=1)
 
 # Train the model
 trainer.fit(model, train_dataloader)
