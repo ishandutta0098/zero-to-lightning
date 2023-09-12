@@ -11,12 +11,6 @@ from torch.utils.data import DataLoader, random_split
 from torchvision import transforms
 from torchvision.datasets import MNIST
 
-# The LightningDataModule is a convenient way to manage data in PyTorch Lightning.
-# It encapsulates training, validation, testing, and prediction dataloaders,
-# as well as any necessary steps for data processing, downloads, and transformations.
-# By using a LightningDataModule, you can easily develop dataset-agnostic models, hot-swap different datasets,
-# and share data splits and transformations across projects.
-
 
 class MNISTDataModule(pl.LightningDataModule):
     def __init__(self, data_dir: str = "./"):
@@ -120,6 +114,10 @@ class LitConvClassifier(pl.LightningModule):
 data_module = MNISTDataModule()
 model = LitConvClassifier()
 
+# Lower precision, such as 16-bit floating-point, requires less memory and
+# enables training and deploying larger models. Higher precision,
+# such as the 64-bit floating-point, can be used for highly sensitive use-cases.
+
 trainer = pl.Trainer(
     max_epochs=1,
     default_root_dir="experiments/",
@@ -127,10 +125,9 @@ trainer = pl.Trainer(
         EarlyStopping(monitor="val_loss", mode="min"),
         ModelSummary(max_depth=-1),
     ],
+    precision="16-mixed",
 )
 
-# Train Model
-# We can pass the data module directly to the trainer
 trainer.fit(model, data_module)
 
 # Get Predictions

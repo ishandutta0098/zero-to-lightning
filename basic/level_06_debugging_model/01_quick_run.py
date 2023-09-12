@@ -1,16 +1,16 @@
 # Imports
 import os
+import time
 
 import lightning.pytorch as pl
-from lightning.pytorch.callbacks.early_stopping import EarlyStopping
-
-import time
 import torch
+from lightning.pytorch.callbacks.early_stopping import EarlyStopping
 from torch import nn
 from torch.nn import functional as F
 from torch.utils.data import DataLoader
 from torchvision import transforms
 from torchvision.datasets import MNIST
+
 
 class LitConvClassifier(pl.LightningModule):
     def __init__(self, learning_rate=1e-3):
@@ -38,14 +38,14 @@ class LitConvClassifier(pl.LightningModule):
         y_hat = self(x)
         loss = F.cross_entropy(y_hat, y)
         return loss
-    
+
     def validation_step(self, batch, batch_idx):
         x, y = batch
         y_hat = self(x)
         loss = F.cross_entropy(y_hat, y)
         self.log("val_loss", loss)
         return loss
-    
+
     def test_step(self, batch, batch_idx):
         x, y = batch
         y_hat = self(x)
@@ -56,16 +56,23 @@ class LitConvClassifier(pl.LightningModule):
         optimizer = torch.optim.Adam(self.parameters(), lr=self.learning_rate)
         return optimizer
 
+
 def prepare_dataloaders():
-    train_dataset = MNIST(os.getcwd(), download=True, train=True, transform=transforms.ToTensor())
+    train_dataset = MNIST(
+        os.getcwd(), download=True, train=True, transform=transforms.ToTensor()
+    )
 
     train_size = int(0.8 * len(train_dataset))
     val_size = len(train_dataset) - train_size
 
     seed = torch.Generator().manual_seed(42)
-    train_dataset, val_dataset = torch.utils.data.random_split(train_dataset, [train_size, val_size], generator=seed)
+    train_dataset, val_dataset = torch.utils.data.random_split(
+        train_dataset, [train_size, val_size], generator=seed
+    )
 
-    test_dataset = MNIST(os.getcwd(), download=True, train=False, transform=transforms.ToTensor())
+    test_dataset = MNIST(
+        os.getcwd(), download=True, train=False, transform=transforms.ToTensor()
+    )
 
     train_dataloader = DataLoader(train_dataset, batch_size=32)
     val_dataloader = DataLoader(val_dataset, batch_size=32)
@@ -73,22 +80,27 @@ def prepare_dataloaders():
 
     return train_dataloader, val_dataloader, test_dataloader
 
+
 train_dataloader, val_dataloader, test_dataloader = prepare_dataloaders()
 
 model = LitConvClassifier()
 
 # Default
 start = time.time()
-trainer = pl.Trainer(max_epochs=1, default_root_dir="../../experiments/", callbacks=[EarlyStopping(monitor="val_loss", mode="min")])
+trainer = pl.Trainer(
+    max_epochs=1,
+    default_root_dir="../../experiments/",
+    callbacks=[EarlyStopping(monitor="val_loss", mode="min")],
+)
 trainer.fit(model, train_dataloader, val_dataloader)
 end = time.time()
 print(f"\nDefault Training time: {end - start}")
 
 # fast_dev_run
-# The fast_dev_run argument in the trainer runs 5 batch of training, validation, 
+# The fast_dev_run argument in the trainer runs 5 batch of training, validation,
 # test and prediction data through your trainer to see if there are any bugs
 # To change how many batches to use, change the argument to an integer.
-# This argument will disable tuner, checkpoint callbacks, early stopping callbacks, 
+# This argument will disable tuner, checkpoint callbacks, early stopping callbacks,
 # loggers and logger callbacks like LearningRateMonitor and DeviceStatsMonitor.
 start = time.time()
 trainer = pl.Trainer(fast_dev_run=True)
@@ -106,7 +118,7 @@ end = time.time()
 print(f"S\nhortened Epoch Training time: {end - start}")
 
 # Sanity Check
-# Lightning runs 2 steps of validation in the beginning of training. 
+# Lightning runs 2 steps of validation in the beginning of training.
 # This avoids crashing in the validation loop sometime deep into a lengthy training loop.
 start = time.time()
 trainer = pl.Trainer(max_epochs=1, num_sanity_val_steps=2)

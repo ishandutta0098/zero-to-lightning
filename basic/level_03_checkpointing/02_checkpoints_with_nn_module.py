@@ -9,6 +9,7 @@ from torch.utils.data import DataLoader
 from torchvision import transforms
 from torchvision.datasets import MNIST
 
+
 class ConvClassifier(nn.Module):
     def __init__(self):
         super(ConvClassifier, self).__init__()
@@ -44,13 +45,13 @@ class LitConvClassifier(pl.LightningModule):
         y_hat = self(x)
         loss = F.cross_entropy(y_hat, y)
         return loss
-    
+
     def validation_step(self, batch, batch_idx):
         x, y = batch
         y_hat = self(x)
         loss = F.cross_entropy(y_hat, y)
         return loss
-    
+
     def test_step(self, batch, batch_idx):
         x, y = batch
         y_hat = self(x)
@@ -61,22 +62,30 @@ class LitConvClassifier(pl.LightningModule):
         optimizer = torch.optim.Adam(self.parameters(), lr=self.learning_rate)
         return optimizer
 
+
 def prepare_dataloaders():
-    train_dataset = MNIST(os.getcwd(), download=True, train=True, transform=transforms.ToTensor())
+    train_dataset = MNIST(
+        os.getcwd(), download=True, train=True, transform=transforms.ToTensor()
+    )
 
     train_size = int(0.8 * len(train_dataset))
     val_size = len(train_dataset) - train_size
 
     seed = torch.Generator().manual_seed(42)
-    train_dataset, val_dataset = torch.utils.data.random_split(train_dataset, [train_size, val_size], generator=seed)
+    train_dataset, val_dataset = torch.utils.data.random_split(
+        train_dataset, [train_size, val_size], generator=seed
+    )
 
-    test_dataset = MNIST(os.getcwd(), download=True, train=False, transform=transforms.ToTensor())
+    test_dataset = MNIST(
+        os.getcwd(), download=True, train=False, transform=transforms.ToTensor()
+    )
 
     train_dataloader = DataLoader(train_dataset, batch_size=32)
     val_dataloader = DataLoader(val_dataset, batch_size=32)
     test_dataloader = DataLoader(test_dataset, batch_size=32)
 
     return train_dataloader, val_dataloader, test_dataloader
+
 
 train_dataloader, val_dataloader, test_dataloader = prepare_dataloaders()
 
@@ -89,10 +98,12 @@ trainer.fit(model, train_dataloader, val_dataloader)
 
 # Load the module using the state dict
 
-checkpoint_path = "experiments/lightning_logs/version_2/checkpoints/epoch=0-step=1500.ckpt"
+checkpoint_path = (
+    "experiments/lightning_logs/version_2/checkpoints/epoch=0-step=1500.ckpt"
+)
 
 checkpoint = torch.load(checkpoint_path)
-state_dict = checkpoint['state_dict']
+state_dict = checkpoint["state_dict"]
 
 classifier_model = ConvClassifier()
 classifier_model.load_state_dict(state_dict)

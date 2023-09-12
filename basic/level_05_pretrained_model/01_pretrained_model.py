@@ -1,10 +1,12 @@
 import os
+
+import lightning.pytorch as pl
 import torch
+import torchvision.models as models
 from torch import nn
 from torch.nn import functional as F
 from torchvision import datasets, transforms
-import torchvision.models as models
-import lightning.pytorch as pl
+
 
 # Define the Lightning Module
 class ImagenetTransferLearning(pl.LightningModule):
@@ -12,7 +14,7 @@ class ImagenetTransferLearning(pl.LightningModule):
         super().__init__()
 
         # init a pretrained resnet
-        backbone = models.resnet50(weights="DEFAULT") 
+        backbone = models.resnet50(weights="DEFAULT")
         num_filters = backbone.fc.in_features
         layers = list(backbone.children())[:-1]
         self.feature_extractor = nn.Sequential(*layers)
@@ -38,18 +40,27 @@ class ImagenetTransferLearning(pl.LightningModule):
     def configure_optimizers(self):
         return torch.optim.Adam(self.parameters(), lr=self.learning_rate)
 
-# Data preparation
-transform = transforms.Compose([
-    transforms.Resize((224, 224)), # ResNet50 expects 224x224 input size
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]), # Normalization for Imagenet data
-])
 
-train_dataset = datasets.CIFAR10(root=os.getcwd(), train=True, transform=transform, download=True)
+# Data preparation
+transform = transforms.Compose(
+    [
+        transforms.Resize((224, 224)),  # ResNet50 expects 224x224 input size
+        transforms.ToTensor(),
+        transforms.Normalize(
+            mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]
+        ),  # Normalization for Imagenet data
+    ]
+)
+
+train_dataset = datasets.CIFAR10(
+    root=os.getcwd(), train=True, transform=transform, download=True
+)
 # Use a subset of the training data for demonstration purposes
 train_dataset = torch.utils.data.Subset(train_dataset, indices=list(range(100)))
 
-train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=32, shuffle=True)
+train_dataloader = torch.utils.data.DataLoader(
+    train_dataset, batch_size=32, shuffle=True
+)
 
 # Training
 model = ImagenetTransferLearning()
@@ -65,7 +76,9 @@ loaded_model.freeze()
 
 # Load some CIFAR10 images for prediction (assuming you're using the same transform as above)
 test_dataset = datasets.CIFAR10(root=os.getcwd(), train=False, transform=transform)
-test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=5)  # Loading 5 images for demonstration
+test_dataloader = torch.utils.data.DataLoader(
+    test_dataset, batch_size=5
+)  # Loading 5 images for demonstration
 some_images_from_cifar10, _ = next(iter(test_dataloader))
 
 predictions = loaded_model(some_images_from_cifar10)

@@ -11,12 +11,6 @@ from torch.utils.data import DataLoader, random_split
 from torchvision import transforms
 from torchvision.datasets import MNIST
 
-# The LightningDataModule is a convenient way to manage data in PyTorch Lightning.
-# It encapsulates training, validation, testing, and prediction dataloaders,
-# as well as any necessary steps for data processing, downloads, and transformations.
-# By using a LightningDataModule, you can easily develop dataset-agnostic models, hot-swap different datasets,
-# and share data splits and transformations across projects.
-
 
 class MNISTDataModule(pl.LightningDataModule):
     def __init__(self, data_dir: str = "./"):
@@ -120,6 +114,11 @@ class LitConvClassifier(pl.LightningModule):
 data_module = MNISTDataModule()
 model = LitConvClassifier()
 
+# Gradient clipping can be enabled to avoid exploding gradients.
+# By default, this will clip the gradient norm by calling torch.nn.utils.clip_grad_norm_()
+# computed over all model parameters together. If the Trainer’s gradient_clip_algorithm is set to
+# 'value' ('norm' by default), this will use instead torch.nn.utils.clip_grad_value_() for each parameter instead.
+
 trainer = pl.Trainer(
     max_epochs=1,
     default_root_dir="experiments/",
@@ -127,10 +126,10 @@ trainer = pl.Trainer(
         EarlyStopping(monitor="val_loss", mode="min"),
         ModelSummary(max_depth=-1),
     ],
+    precision="16-mixed",
+    gradient_clip_val=0.5,  # clip gradients' global norm to <=0.5 using gradient_clip_algorithm='norm' by default
 )
 
-# Train Model
-# We can pass the data module directly to the trainer
 trainer.fit(model, data_module)
 
 # Get Predictions

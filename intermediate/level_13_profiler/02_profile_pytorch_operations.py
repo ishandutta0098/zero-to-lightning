@@ -3,19 +3,15 @@ import os
 
 import lightning.pytorch as pl
 import torch
-from lightning.pytorch.callbacks import ModelSummary
+from lightning.pytorch.callbacks import (DeviceStatsMonitor, ModelSummary,
+                                         StochasticWeightAveraging)
 from lightning.pytorch.callbacks.early_stopping import EarlyStopping
+from lightning.pytorch.profilers import PyTorchProfiler
 from torch import nn
 from torch.nn import functional as F
 from torch.utils.data import DataLoader, random_split
 from torchvision import transforms
 from torchvision.datasets import MNIST
-
-# The LightningDataModule is a convenient way to manage data in PyTorch Lightning.
-# It encapsulates training, validation, testing, and prediction dataloaders,
-# as well as any necessary steps for data processing, downloads, and transformations.
-# By using a LightningDataModule, you can easily develop dataset-agnostic models, hot-swap different datasets,
-# and share data splits and transformations across projects.
 
 
 class MNISTDataModule(pl.LightningDataModule):
@@ -120,17 +116,23 @@ class LitConvClassifier(pl.LightningModule):
 data_module = MNISTDataModule()
 model = LitConvClassifier()
 
+# To understand the cost of each PyTorch operation,
+# use the PyTorchProfiler built on top of the PyTorch profiler.
 trainer = pl.Trainer(
     max_epochs=1,
     default_root_dir="experiments/",
     callbacks=[
         EarlyStopping(monitor="val_loss", mode="min"),
         ModelSummary(max_depth=-1),
+        StochasticWeightAveraging(swa_lrs=1e-2),
+        DeviceStatsMonitor(),
     ],
+    precision="16-mixed",
+    profiler=PyTorchProfiler(),
+    limit_train_batches=0.1,
+    limit_val_batches=0.01,
 )
 
-# Train Model
-# We can pass the data module directly to the trainer
 trainer.fit(model, data_module)
 
 # Get Predictions

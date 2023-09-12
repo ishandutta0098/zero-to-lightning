@@ -9,6 +9,7 @@ from torch.utils.data import DataLoader
 from torchvision import transforms
 from torchvision.datasets import MNIST
 
+
 class LitConvClassifier(pl.LightningModule):
     def __init__(self):
         super().__init__()
@@ -36,7 +37,7 @@ class LitConvClassifier(pl.LightningModule):
 
         loss = F.cross_entropy(y_hat, y)
         return loss
-    
+
     def validation_step(self, batch, batch_idx):
         # The validation step is performed once per batch of data from the validation set.
         # It's used to check the model's performance on the validation set during training.
@@ -45,7 +46,7 @@ class LitConvClassifier(pl.LightningModule):
 
         loss = F.cross_entropy(y_hat, y)
         return loss
-    
+
     def test_step(self, batch, batch_idx):
         # The test step is performed once per batch of data from the test set.
         # It's used to assess the model's performance on unseen data after training is complete.
@@ -60,7 +61,9 @@ class LitConvClassifier(pl.LightningModule):
         return optimizer
 
 
-train_dataset = MNIST(os.getcwd(), download=True, train=True, transform=transforms.ToTensor())
+train_dataset = MNIST(
+    os.getcwd(), download=True, train=True, transform=transforms.ToTensor()
+)
 
 # Calculate training and validation split
 # We will keep 80% data for training and 20% for validation
@@ -69,9 +72,13 @@ val_size = len(train_dataset) - train_size
 
 # Split the dataset into training and validation
 seed = torch.Generator().manual_seed(42)
-train_dataset, val_dataset = torch.utils.data.random_split(train_dataset, [train_size, val_size], generator=seed)
+train_dataset, val_dataset = torch.utils.data.random_split(
+    train_dataset, [train_size, val_size], generator=seed
+)
 
-test_dataset = MNIST(os.getcwd(), download=True, train=False, transform=transforms.ToTensor())
+test_dataset = MNIST(
+    os.getcwd(), download=True, train=False, transform=transforms.ToTensor()
+)
 
 # Create data loaders for loading the data in batches
 train_dataloader = DataLoader(train_dataset, batch_size=32)

@@ -2,20 +2,15 @@
 import os
 
 import lightning.pytorch as pl
+import onnxruntime
 import torch
-from lightning.pytorch.callbacks import ModelSummary
+from lightning.pytorch.callbacks import ModelSummary, StochasticWeightAveraging
 from lightning.pytorch.callbacks.early_stopping import EarlyStopping
 from torch import nn
 from torch.nn import functional as F
 from torch.utils.data import DataLoader, random_split
 from torchvision import transforms
 from torchvision.datasets import MNIST
-
-# The LightningDataModule is a convenient way to manage data in PyTorch Lightning.
-# It encapsulates training, validation, testing, and prediction dataloaders,
-# as well as any necessary steps for data processing, downloads, and transformations.
-# By using a LightningDataModule, you can easily develop dataset-agnostic models, hot-swap different datasets,
-# and share data splits and transformations across projects.
 
 
 class MNISTDataModule(pl.LightningDataModule):
@@ -120,19 +115,13 @@ class LitConvClassifier(pl.LightningModule):
 data_module = MNISTDataModule()
 model = LitConvClassifier()
 
-trainer = pl.Trainer(
-    max_epochs=1,
-    default_root_dir="experiments/",
-    callbacks=[
-        EarlyStopping(monitor="val_loss", mode="min"),
-        ModelSummary(max_depth=-1),
-    ],
-)
+# ONNX is a package developed by Microsoft to optimize inference.
+# ONNX allows the model to be independent of PyTorch and run on any ONNX Runtime.
+filepath = "model.onnx"
+model.to_onnx(filepath, export_params=True)
 
-# Train Model
-# We can pass the data module directly to the trainer
-trainer.fit(model, data_module)
-
-# Get Predictions
-predictions = trainer.predict(model, data_module)
-print(len(predictions))
+# Once you have the exported model, you can run it on your ONNX runtime in the following way:
+ort_session = onnxruntime.InferenceSession(filepath)
+input_name = ort_session.get_inputs()[0].name
+ort_inputs = {input_name: torch.rand(1, 1, 28, 28).numpy()}
+ort_outs = ort_session.run(None, ort_inputs)

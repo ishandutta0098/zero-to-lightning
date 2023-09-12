@@ -3,19 +3,13 @@ import os
 
 import lightning.pytorch as pl
 import torch
-from lightning.pytorch.callbacks import ModelSummary
+from lightning.pytorch.callbacks import ModelSummary, StochasticWeightAveraging
 from lightning.pytorch.callbacks.early_stopping import EarlyStopping
 from torch import nn
 from torch.nn import functional as F
 from torch.utils.data import DataLoader, random_split
 from torchvision import transforms
 from torchvision.datasets import MNIST
-
-# The LightningDataModule is a convenient way to manage data in PyTorch Lightning.
-# It encapsulates training, validation, testing, and prediction dataloaders,
-# as well as any necessary steps for data processing, downloads, and transformations.
-# By using a LightningDataModule, you can easily develop dataset-agnostic models, hot-swap different datasets,
-# and share data splits and transformations across projects.
 
 
 class MNISTDataModule(pl.LightningDataModule):
@@ -120,17 +114,23 @@ class LitConvClassifier(pl.LightningModule):
 data_module = MNISTDataModule()
 model = LitConvClassifier()
 
+# Stochastic Weight Averaging (SWA) can make your models generalize better at virtually no additional cost.
+# This can be used with both non-trained and trained models.
+# The SWA procedure smooths the loss landscape thus making it harder to end up in a local minimum during optimization.
+
 trainer = pl.Trainer(
     max_epochs=1,
     default_root_dir="experiments/",
     callbacks=[
         EarlyStopping(monitor="val_loss", mode="min"),
         ModelSummary(max_depth=-1),
+        StochasticWeightAveraging(
+            swa_lrs=1e-2
+        ),  # Enable Stochastic Weight Averaging using the callback
     ],
+    precision="16-mixed",
 )
 
-# Train Model
-# We can pass the data module directly to the trainer
 trainer.fit(model, data_module)
 
 # Get Predictions
