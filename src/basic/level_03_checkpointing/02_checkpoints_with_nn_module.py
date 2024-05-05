@@ -67,7 +67,7 @@ class LitConvClassifier(pl.LightningModule):
 
 def prepare_dataloaders():
     train_dataset = MNIST(
-        os.getcwd(), download=True, train=True, transform=transforms.ToTensor()
+        "./", download=True, train=True, transform=transforms.ToTensor()
     )
 
     train_size = int(0.8 * len(train_dataset))
@@ -79,7 +79,7 @@ def prepare_dataloaders():
     )
 
     test_dataset = MNIST(
-        os.getcwd(), download=True, train=False, transform=transforms.ToTensor()
+        "./", download=True, train=False, transform=transforms.ToTensor()
     )
 
     train_dataloader = DataLoader(train_dataset, batch_size=32)
@@ -101,7 +101,7 @@ trainer.fit(model, train_dataloader, val_dataloader)
 # Load the module using the state dict
 
 checkpoint_path = (
-    "experiments/lightning_logs/version_2/checkpoints/epoch=0-step=1500.ckpt"
+    "experiments/lightning_logs/version_0/checkpoints/epoch=0-step=1500.ckpt"
 )
 
 checkpoint = torch.load(checkpoint_path)

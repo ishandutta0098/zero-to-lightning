@@ -65,7 +65,7 @@ class LitConvClassifier(pl.LightningModule):
 
 def prepare_dataloaders():
     train_dataset = MNIST(
-        os.getcwd(), download=True, train=True, transform=transforms.ToTensor()
+        "./", download=True, train=True, transform=transforms.ToTensor()
     )
 
     train_size = int(0.8 * len(train_dataset))
@@ -77,7 +77,7 @@ def prepare_dataloaders():
     )
 
     test_dataset = MNIST(
-        os.getcwd(), download=True, train=False, transform=transforms.ToTensor()
+        "./", download=True, train=False, transform=transforms.ToTensor()
     )
 
     train_dataloader = DataLoader(train_dataset, batch_size=32)
@@ -93,7 +93,7 @@ model = LitConvClassifier()
 
 # Then pass the callback to the trainer
 trainer = pl.Trainer(
-    max_epochs=1,
+    max_epochs=3,
     default_root_dir="experiments/",
     callbacks=[EarlyStopping(monitor="val_loss", mode="min")],
 )
@@ -102,7 +102,7 @@ trainer.fit(model, train_dataloader, val_dataloader)
 # Or customize the early stopping callback and pass it to the trainer
 early_stopping = EarlyStopping(monitor="val_loss", mode="min", patience=3, verbose=True)
 trainer = pl.Trainer(
-    max_epochs=1, default_root_dir="experiments/", callbacks=[early_stopping]
+    max_epochs=3, default_root_dir="experiments/", callbacks=[early_stopping]
 )
 
 trainer.fit(model, train_dataloader, val_dataloader)

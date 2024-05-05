@@ -16,7 +16,7 @@ class LitConvClassifier(pl.LightningModule):
     def __init__(self, learning_rate=1e-3):
         super().__init__()
 
-        # You can save teh hyperparameters initialized in the __init__ method
+        # You can save the hyperparameters initialized in the __init__ method
         # by calling self.save_hyperparameters() in the __init__ method.
         # Here we save the learning_rate hyperparameter.
         self.save_hyperparameters()
@@ -62,7 +62,7 @@ class LitConvClassifier(pl.LightningModule):
 
 def prepare_dataloaders():
     train_dataset = MNIST(
-        os.getcwd(), download=True, train=True, transform=transforms.ToTensor()
+        "./", download=True, train=True, transform=transforms.ToTensor()
     )
 
     train_size = int(0.8 * len(train_dataset))
@@ -74,7 +74,7 @@ def prepare_dataloaders():
     )
 
     test_dataset = MNIST(
-        os.getcwd(), download=True, train=False, transform=transforms.ToTensor()
+        "./", download=True, train=False, transform=transforms.ToTensor()
     )
 
     train_dataloader = DataLoader(train_dataset, batch_size=32)
@@ -96,8 +96,9 @@ trainer = pl.Trainer(max_epochs=1, default_root_dir="experiments/")
 trainer.fit(model, train_dataloader, val_dataloader)
 
 # Load the checkpoint from the path
+# You can modify the path to the checkpoint file you want to load
 checkpoint_path = (
-    "experiments/lightning_logs/version_2/checkpoints/epoch=0-step=1500.ckpt"
+    "experiments/lightning_logs/version_0/checkpoints/epoch=0-step=1500.ckpt"
 )
 
 # By default, the checkpoint loads the model with the same parameters as the original model

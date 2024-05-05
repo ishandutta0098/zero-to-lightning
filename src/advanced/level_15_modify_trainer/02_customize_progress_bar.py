@@ -17,7 +17,7 @@ from torchvision.datasets import MNIST
 
 
 class MNISTDataModule(pl.LightningDataModule):
-    def __init__(self, data_dir: str = "../../../"):
+    def __init__(self, data_dir: str = "./"):
         super().__init__()
         self.data_dir = data_dir
         self.transform = transforms.Compose(
@@ -136,7 +136,7 @@ rich_progress_bar = RichProgressBar(
 
 trainer = pl.Trainer(
     max_epochs=1,
-    default_root_dir="../../../experiments/",
+    default_root_dir="experiments",
     callbacks=[
         EarlyStopping(monitor="val_loss", mode="min"),
         ModelSummary(max_depth=-1),

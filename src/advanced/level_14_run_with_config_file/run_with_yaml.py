@@ -146,11 +146,11 @@ if __name__ == "__main__":
 
 # There are 3 Steps to run this:
 # 1. Save the current configs in config.yaml
-# python run_with_yaml.py fit --print_config > config.yaml
+# python src/advanced/level_14_run_with_config_file/run_with_yaml.py fit --print_config > config.yaml
 
 # 2. Run the training using the config file
-# python run_with_yaml.py fit --config config.yaml
+# python src/advanced/level_14_run_with_config_file/run_with_yaml.py fit --config config.yaml
 
 # 3. Modify the config file and run the training again
 # Example, try making `max_epochs` as 3 in the config file and run the training again
-# python run_with_yaml.py fit --config config.yaml
+# python src/advanced/level_14_run_with_config_file/run_with_yaml.py fit --config config.yaml

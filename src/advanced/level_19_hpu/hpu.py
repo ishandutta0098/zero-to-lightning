@@ -17,7 +17,7 @@ from torchvision.datasets import MNIST
 
 
 class MNISTDataModule(pl.LightningDataModule):
-    def __init__(self, data_dir: str = "../../../"):
+    def __init__(self, data_dir: str = "./"):
         super().__init__()
         self.data_dir = data_dir
         self.transform = transforms.Compose(
@@ -120,7 +120,7 @@ model = LitConvClassifier()
 # Run on as many Gaudi devices as available by default
 trainer = pl.Trainer(
     max_epochs=3,
-    default_root_dir="../../../experiments/",
+    default_root_dir="experiments",
     callbacks=[
         EarlyStopping(monitor="val_loss", mode="min"),
         ModelSummary(max_depth=-1),
@@ -136,7 +136,7 @@ trainer = pl.Trainer(
 # equivalent to
 trainer = pl.Trainer(
     max_epochs=3,
-    default_root_dir="../../../experiments/",
+    default_root_dir="experiments",
     callbacks=[
         EarlyStopping(monitor="val_loss", mode="min"),
         ModelSummary(max_depth=-1),
@@ -149,7 +149,7 @@ trainer = pl.Trainer(
 # Run on one Gaudi device
 trainer = pl.Trainer(
     max_epochs=3,
-    default_root_dir="../../../experiments/",
+    default_root_dir="experiments",
     callbacks=[
         EarlyStopping(monitor="val_loss", mode="min"),
         ModelSummary(max_depth=-1),
@@ -164,7 +164,7 @@ trainer = pl.Trainer(
 # Run on multiple Gaudi devices
 trainer = pl.Trainer(
     max_epochs=3,
-    default_root_dir="../../../experiments/",
+    default_root_dir="experiments",
     callbacks=[
         EarlyStopping(monitor="val_loss", mode="min"),
         ModelSummary(max_depth=-1),
@@ -183,7 +183,7 @@ parallel_hpus = [torch.device("hpu")] * hpus
 
 trainer = pl.Trainer(
     max_epochs=3,
-    default_root_dir="../../../experiments/",
+    default_root_dir="experiments",
     callbacks=[
         EarlyStopping(monitor="val_loss", mode="min"),
         ModelSummary(max_depth=-1),

@@ -56,7 +56,7 @@ transform = transforms.Compose(
 )
 
 train_dataset = datasets.CIFAR10(
-    root=os.getcwd(), train=True, transform=transform, download=True
+    root="./", train=True, transform=transform, download=True
 )
 # Use a subset of the training data for demonstration purposes
 train_dataset = torch.utils.data.Subset(train_dataset, indices=list(range(100)))
@@ -78,7 +78,7 @@ loaded_model = ImagenetTransferLearning.load_from_checkpoint("example_model.ckpt
 loaded_model.freeze()
 
 # Load some CIFAR10 images for prediction (assuming you're using the same transform as above)
-test_dataset = datasets.CIFAR10(root=os.getcwd(), train=False, transform=transform)
+test_dataset = datasets.CIFAR10(root="./", train=False, transform=transform)
 test_dataloader = torch.utils.data.DataLoader(
     test_dataset, batch_size=5
 )  # Loading 5 images for demonstration

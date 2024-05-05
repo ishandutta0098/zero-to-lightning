@@ -61,7 +61,7 @@ class LitConvClassifier(pl.LightningModule):
 
 def prepare_dataloaders():
     train_dataset = MNIST(
-        os.getcwd(), download=True, train=True, transform=transforms.ToTensor()
+        "./", download=True, train=True, transform=transforms.ToTensor()
     )
 
     train_size = int(0.8 * len(train_dataset))
@@ -73,7 +73,7 @@ def prepare_dataloaders():
     )
 
     test_dataset = MNIST(
-        os.getcwd(), download=True, train=False, transform=transforms.ToTensor()
+        "./", download=True, train=False, transform=transforms.ToTensor()
     )
 
     train_dataloader = DataLoader(train_dataset, batch_size=32)

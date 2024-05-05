@@ -1,8 +1,6 @@
 # Documentation Link
 # https://lightning.ai/docs/pytorch/stable/tuning/profiler_basic.html
 
-import os
-
 import lightning.pytorch as pl
 import torch
 from lightning.pytorch.callbacks import (

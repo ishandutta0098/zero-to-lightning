@@ -64,7 +64,7 @@ class LitConvClassifier(pl.LightningModule):
 
 
 train_dataset = MNIST(
-    os.getcwd(), download=True, train=True, transform=transforms.ToTensor()
+    "./", download=True, train=True, transform=transforms.ToTensor()
 )
 
 # Calculate training and validation split
@@ -79,7 +79,7 @@ train_dataset, val_dataset = torch.utils.data.random_split(
 )
 
 test_dataset = MNIST(
-    os.getcwd(), download=True, train=False, transform=transforms.ToTensor()
+    "./", download=True, train=False, transform=transforms.ToTensor()
 )
 
 # Create data loaders for loading the data in batches

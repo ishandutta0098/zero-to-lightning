@@ -1,8 +1,6 @@
 # Documentation Link
 # https://lightning.ai/docs/pytorch/stable/model/train_model_basic.html
 
-import os
-
 import lightning.pytorch as pl
 import torch
 from torch import nn
@@ -62,7 +60,7 @@ class LitConvClassifier(pl.LightningModule):
 
 # Load Dataset
 # MNIST is a widely used dataset for handwritten digit recognition
-dataset = MNIST(os.getcwd(), download=True, transform=transforms.ToTensor())
+dataset = MNIST("./", download=True, transform=transforms.ToTensor())
 
 # Create a Dataloader with batch size of 32
 # Batch size is a hyperparameter that defines the number of
