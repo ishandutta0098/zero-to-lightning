@@ -9,7 +9,6 @@ from lightning.pytorch.callbacks.early_stopping import EarlyStopping
 # Import the HPUAccelerator
 from lightning_habana.pytorch.accelerator import HPUAccelerator
 from lightning_habana.pytorch.strategies import HPUParallelStrategy
-
 from torch import nn
 from torch.nn import functional as F
 from torch.utils.data import DataLoader, random_split
@@ -177,7 +176,7 @@ trainer = pl.Trainer(
     devices="8",
 )
 
-# To train a Lightning model using multiple HPU nodes, 
+# To train a Lightning model using multiple HPU nodes,
 # set the num_nodes parameter with the available nodes in the Trainer class.
 hpus = 8
 parallel_hpus = [torch.device("hpu")] * hpus
@@ -195,7 +194,7 @@ trainer = pl.Trainer(
     accelerator=HPUAccelerator(),
     devices=hpus,
     strategy=HPUParallelStrategy(parallel_devices=parallel_hpus),
-    num_nodes=2
+    num_nodes=2,
 )
 
 trainer.fit(model, data_module)

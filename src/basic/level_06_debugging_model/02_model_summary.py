@@ -5,6 +5,7 @@ import os
 
 import lightning.pytorch as pl
 import torch
+
 # Used for child modules in the model summary
 from lightning.pytorch.callbacks import ModelSummary
 from lightning.pytorch.callbacks.early_stopping import EarlyStopping

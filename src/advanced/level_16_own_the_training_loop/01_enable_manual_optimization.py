@@ -54,20 +54,22 @@ class MNISTDataModule(pl.LightningDataModule):
     def predict_dataloader(self):
         return DataLoader(self.mnist_predict, batch_size=32)
 
+
 # Steps to enable Manual Optimization
 # 1. Set `self.automatic_optimization=False`` in your LightningModule’s __init__.
 
 # 2. Use the following functions and call them manually:
 
-    # 2.1 `self.optimizers()` to access your optimizers (one or multiple)
+# 2.1 `self.optimizers()` to access your optimizers (one or multiple)
 
-    # 2.2 `optimizer.zero_grad()` to clear the gradients from the previous training step
+# 2.2 `optimizer.zero_grad()` to clear the gradients from the previous training step
 
-    # 2.3 `self.manual_backward(loss)` instead of loss.backward()
+# 2.3 `self.manual_backward(loss)` instead of loss.backward()
 
-    # 2.4 `optimizer.step()` to update your model parameters
+# 2.4 `optimizer.step()` to update your model parameters
 
-    # 2.5 `self.toggle_optimizer()` and `self.untoggle_optimizer()` if needed
+# 2.5 `self.toggle_optimizer()` and `self.untoggle_optimizer()` if needed
+
 
 class LitConvClassifier(pl.LightningModule):
     def __init__(self, learning_rate=1e-3):
@@ -76,7 +78,7 @@ class LitConvClassifier(pl.LightningModule):
         self.example_input_array = torch.rand(1, 1, 28, 28)
 
         self.learning_rate = learning_rate
-        
+
         # Enable manual optimization
         self.automatic_optimization = False
 
@@ -98,7 +100,7 @@ class LitConvClassifier(pl.LightningModule):
         x = x.view(x.size(0), -1)
         x = self.fc_block(x)
         return x
-    
+
     # Define the compute_loss method
     def compute_loss(self, batch):
         x, y = batch
@@ -132,7 +134,7 @@ class LitConvClassifier(pl.LightningModule):
     #         opt.zero_grad()
 
     #     return loss
-    
+
     # Example 3: Gradient Clipping
     # def training_step(self, batch, batch_idx):
     #     opt = self.optimizers()
@@ -171,6 +173,7 @@ class LitConvClassifier(pl.LightningModule):
         optimizer = torch.optim.Adam(self.parameters(), lr=self.learning_rate)
 
         return optimizer
+
 
 data_module = MNISTDataModule()
 model = LitConvClassifier()

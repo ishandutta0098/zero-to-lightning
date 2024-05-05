@@ -5,8 +5,11 @@ import os
 
 import lightning.pytorch as pl
 import torch
-from lightning.pytorch.callbacks import (DeviceStatsMonitor, ModelSummary,
-                                         StochasticWeightAveraging)
+from lightning.pytorch.callbacks import (
+    DeviceStatsMonitor,
+    ModelSummary,
+    StochasticWeightAveraging,
+)
 from lightning.pytorch.callbacks.early_stopping import EarlyStopping
 from torch import nn
 from torch.nn import functional as F
