@@ -22,12 +22,11 @@ zero-to-lightning
             |   |-level_13_profiler
             |
             |-advanced
-            |   |-level_14_run_with_config_file
-            |   |-level_15_modify_trainer
-            |   |-level_16_enable_manual_optimization
-            |   |-level_17_advanced_checkpointing
-            |   |-level_18_ipu
-            |   |-level_19_hpu
-            |
-            |-expert
+                |-level_14_run_with_config_file
+                |-level_15_modify_trainer
+                |-level_16_enable_manual_optimization
+                |-level_17_advanced_checkpointing
+                |-level_18_ipu
+                |-level_19_hpu
+
 ```
