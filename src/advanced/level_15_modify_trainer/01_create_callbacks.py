@@ -1,3 +1,6 @@
+# Link to Documentation
+# https://lightning.ai/docs/pytorch/stable/extensions/callbacks.html
+
 import lightning.pytorch as pl
 import torch
 from lightning.pytorch.callbacks import Callback, ModelSummary
