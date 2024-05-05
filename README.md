@@ -26,6 +26,7 @@ zero-to-lightning
             |   |-level_15_modify_trainer
             |   |-level_16_enable_manual_optimization
             |   |-level_17_advanced_checkpointing
+            |   |-level_18_ipu
             |
             |-expert
 ```
