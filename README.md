@@ -27,6 +27,7 @@ zero-to-lightning
             |   |-level_16_enable_manual_optimization
             |   |-level_17_advanced_checkpointing
             |   |-level_18_ipu
+            |   |-level_19_hpu
             |
             |-expert
 ```
