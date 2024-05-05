@@ -23,6 +23,7 @@ zero-to-lightning
             |
             |-advanced
             |   |-level_14_run_with_config_file
+            |   |-level_15_modify_trainer
             |
             |-expert
 ```
