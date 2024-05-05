@@ -1,4 +1,6 @@
-# Imports
+# Documentation Link
+# https://lightning.ai/docs/pytorch/stable/advanced/training_tricks.html
+
 import os
 
 import lightning.pytorch as pl

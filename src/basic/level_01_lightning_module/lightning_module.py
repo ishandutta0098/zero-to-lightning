@@ -1,4 +1,6 @@
-# Imports
+# Documentation Link
+# https://lightning.ai/docs/pytorch/stable/model/train_model_basic.html
+
 import os
 
 import lightning.pytorch as pl

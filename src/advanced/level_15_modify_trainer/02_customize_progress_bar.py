@@ -1,4 +1,4 @@
-# Link to Documentation
+# Documentation Link
 # https://lightning.ai/docs/pytorch/stable/common/progress_bar.html
 
 import lightning.pytorch as pl

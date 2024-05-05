@@ -1,4 +1,6 @@
-# Imports
+# Documentation Link:
+# https://lightning.ai/docs/pytorch/stable/common/checkpointing_basic.html#save-a-checkpoint
+
 import os
 
 import lightning.pytorch as pl

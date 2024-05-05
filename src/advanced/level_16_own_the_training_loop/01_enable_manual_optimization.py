@@ -1,4 +1,4 @@
-# Link to Documentation
+# Documentation Link
 # https://lightning.ai/docs/pytorch/stable/model/build_model_advanced.html
 
 import lightning.pytorch as pl

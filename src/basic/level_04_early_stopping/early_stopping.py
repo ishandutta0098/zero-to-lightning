@@ -1,4 +1,7 @@
-# Imports
+# Documentation Link
+#  https://lightning.ai/docs/pytorch/stable/common/early_stopping.html
+
+
 import os
 
 import lightning.pytorch as pl

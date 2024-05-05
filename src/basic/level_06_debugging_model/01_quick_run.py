@@ -1,4 +1,6 @@
-# Imports
+# Documentation Link
+# https://lightning.ai/docs/pytorch/stable/debug/debugging_basic.html
+
 import os
 import time
 

@@ -1,4 +1,4 @@
-# Link to Documentation
+# Documentaion Link
 # https://lightning.ai/docs/pytorch/stable/extensions/callbacks.html
 
 import lightning.pytorch as pl

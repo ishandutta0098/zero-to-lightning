@@ -1,4 +1,6 @@
-# Imports
+# Documentation Link
+# https://lightning.ai/docs/pytorch/stable/tuning/profiler_intermediate.html
+
 import os
 
 import lightning.pytorch as pl
