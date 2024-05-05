@@ -22,6 +22,7 @@ zero-to-lightning
             |   |-level_13_profiler
             |
             |-advanced
+            |   |-level_14_run_with_config_file
             |
             |-expert
 ```
