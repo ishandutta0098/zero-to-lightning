@@ -106,32 +106,57 @@ model = LitConvClassifier()
 # based on your hardware configuration.
 
 # run on as many GPUs as available by default
-trainer = pl.Trainer(accelerator="auto", devices="auto", strategy="auto")
+trainer = pl.Trainer(
+    max_epochs=5,
+    default_root_dir="experiments/",
+    accelerator="auto",
+    devices="auto",
+    strategy="auto",
+)
 # equivalent to
-trainer = pl.Trainer()
+trainer = pl.Trainer(max_epochs=5, default_root_dir="experiments/")
 
 # run on one GPU
-trainer = pl.Trainer(accelerator="gpu", devices=1)
+trainer = pl.Trainer(
+    max_epochs=5, default_root_dir="experiments/", accelerator="gpu", devices=1
+)
 
 # run on multiple GPUs
-trainer = pl.Trainer(accelerator="gpu", devices=8)
+trainer = pl.Trainer(
+    max_epochs=5, default_root_dir="experiments/", accelerator="gpu", devices=8
+)
 
 # choose the number of devices automatically
-trainer = pl.Trainer(accelerator="gpu", devices="auto")
+trainer = pl.Trainer(
+    max_epochs=5, default_root_dir="experiments/", accelerator="gpu", devices="auto"
+)
 
 # DEFAULT (int) specifies how many GPUs to use per node
 k = 2
-trainer = pl.Trainer(accelerator="gpu", devices=k)
+trainer = pl.Trainer(
+    max_epochs=5, default_root_dir="experiments/", accelerator="gpu", devices=k
+)
 # equivalent to
-trainer = pl.Trainer(accelerator="gpu", devices=list(range(k)))
+trainer = pl.Trainer(
+    max_epochs=5,
+    default_root_dir="experiments/",
+    accelerator="gpu",
+    devices=list(range(k)),
+)
 
 # Specify which GPUs to use (don't use when running on cluster)
-trainer = pl.Trainer(accelerator="gpu", devices=[0, 1])
+trainer = pl.Trainer(
+    max_epochs=5, default_root_dir="experiments/", accelerator="gpu", devices=[0, 1]
+)
 # equivalent to
-trainer = pl.Trainer(accelerator="gpu", devices="0, 1")
+trainer = pl.Trainer(
+    max_epochs=5, default_root_dir="experiments/", accelerator="gpu", devices="0, 1"
+)
 
 # To use all available GPUs put -1 or '-1'
 # equivalent to `list(range(torch.cuda.device_count())) and `"auto"`
-trainer = pl.Trainer(accelerator="gpu", devices=-1)
+trainer = pl.Trainer(
+    max_epochs=5, default_root_dir="experiments/", accelerator="gpu", devices=-1
+)
 
 trainer.fit(model, train_dataloader, val_dataloader)

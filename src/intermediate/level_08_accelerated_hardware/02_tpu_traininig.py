@@ -108,20 +108,34 @@ model = LitConvClassifier()
 # You can request a full pod from Google cloud or a “slice” which gives you some subset of those 2048 cores.
 
 # run on as many TPUs as available by default
-trainer = pl.Trainer(accelerator="auto", devices="auto", strategy="auto")
+trainer = pl.Trainer(
+    max_epochs=5,
+    default_root_dir="experiments/",
+    accelerator="auto",
+    devices="auto",
+    strategy="auto",
+)
 # equivalent to
 trainer = pl.Trainer()
 
 # run on one TPU core
-trainer = pl.Trainer(accelerator="tpu", devices=1)
+trainer = pl.Trainer(
+    max_epochs=5, default_root_dir="experiments/", accelerator="tpu", devices=1
+)
 
 # run on multiple TPU cores
-trainer = pl.Trainer(accelerator="tpu", devices=8)
+trainer = pl.Trainer(
+    max_epochs=5, default_root_dir="experiments/", accelerator="tpu", devices=8
+)
 
 # run on the 5th core
-trainer = pl.Trainer(accelerator="tpu", devices=[5])
+trainer = pl.Trainer(
+    max_epochs=5, default_root_dir="experiments/", accelerator="tpu", devices=[5]
+)
 
 # choose the number of cores automatically
-trainer = pl.Trainer(accelerator="tpu", devices="auto")
+trainer = pl.Trainer(
+    max_epochs=5, default_root_dir="experiments/", accelerator="tpu", devices="auto"
+)
 
 trainer.fit(model, train_dataloader, val_dataloader)
