@@ -100,7 +100,7 @@ model = LitConvClassifier()
 
 trainer = pl.Trainer(
     max_epochs=1,
-    default_root_dir="../../experiments/",
+    default_root_dir="experiments/",
     callbacks=[
         EarlyStopping(monitor="val_loss", mode="min"),
         ModelSummary(max_depth=-1),

@@ -109,7 +109,7 @@ print("Default Model Summary")
 print("----------------------------------")
 trainer = pl.Trainer(
     max_epochs=1,
-    default_root_dir="../../experiments/",
+    default_root_dir="experiments/",
     callbacks=[EarlyStopping(monitor="val_loss", mode="min")],
 )
 trainer.fit(model, train_dataloader, val_dataloader)
@@ -120,7 +120,7 @@ print("Child Modules Model Summary")
 print("----------------------------------")
 trainer = pl.Trainer(
     max_epochs=1,
-    default_root_dir="../../experiments/",
+    default_root_dir="experiments/",
     callbacks=[
         EarlyStopping(monitor="val_loss", mode="min"),
         ModelSummary(max_depth=-1),
@@ -134,7 +134,7 @@ print("Turn off Model Summary")
 print("----------------------------------")
 trainer = pl.Trainer(
     max_epochs=1,
-    default_root_dir="../../experiments/",
+    default_root_dir="experiments/",
     callbacks=[EarlyStopping(monitor="val_loss", mode="min")],
     enable_model_summary=False,
 )

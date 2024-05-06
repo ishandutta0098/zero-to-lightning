@@ -91,7 +91,7 @@ model = LitConvClassifier()
 start = time.time()
 trainer = pl.Trainer(
     max_epochs=1,
-    default_root_dir="../../experiments/",
+    default_root_dir="experiments/",
     callbacks=[EarlyStopping(monitor="val_loss", mode="min")],
 )
 trainer.fit(model, train_dataloader, val_dataloader)
