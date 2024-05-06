@@ -2,3 +2,4 @@ lightning_logs
 __pycache__
 MNIST
 .DS_STORE
+cifar*
