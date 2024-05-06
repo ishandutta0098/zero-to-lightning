@@ -8,6 +8,8 @@ Welcome to the GitHub repository for Zero-to-Lightning! This project contains a 
 
 ## Project Demo
 
+https://github.com/ishandutta0098/zero-to-lightning/assets/47643789/a068e1d1-0ec8-4357-b4e2-d1c8090224fd
+
 
 ## Project Directory
 
